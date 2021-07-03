@@ -1,5 +1,7 @@
 package backend.model;
 
+import java.util.Objects;
+
 public class Point {
 
     public double x, y;
@@ -17,9 +19,30 @@ public class Point {
         return y;
     }
 
+    public double distanceTo(Point other) {
+        return Math.sqrt(Math.pow(other.x - x, 2) + Math.pow(other.y - y, 2));
+    }
+
     @Override
     public String toString() {
         return String.format("{%.2f , %.2f}", x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Point))
+            return false;
+        Point point = (Point) o;
+        if (Double.compare(point.x, x) != 0)
+            return false;
+        return Double.compare(point.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
 }

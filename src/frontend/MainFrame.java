@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 public class MainFrame extends VBox {
 
     public MainFrame(CanvasState canvasState) {
+        // Add node component to scene layout
         getChildren().add(new AppMenuBar());
         StatusPane statusPane = new StatusPane();
         getChildren().add(new PaintPane(canvasState, statusPane));

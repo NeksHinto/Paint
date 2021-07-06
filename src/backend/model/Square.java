@@ -11,5 +11,10 @@ public class Square extends Rectangle {
         return String.format("Cuadrado [ %s , %s ]", getTopLeft(), getBottomRight());
     }
 
+    @Override
+    public MovablePoint[] getPoints() {
+        return new MovablePoint[]{(MovablePoint) topLeft, (MovablePoint) bottomRight};
+    }
+
 
 }

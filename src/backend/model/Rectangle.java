@@ -9,6 +9,11 @@ public class Rectangle extends Figure2D {
         this.bottomRight = bottomRight;
     }
 
+    @Override
+    public MovablePoint[] getPoints() {
+        return new MovablePoint[]{(MovablePoint) topLeft, (MovablePoint) bottomRight};
+    }
+
     public Point getTopLeft() {
         return topLeft;
     }

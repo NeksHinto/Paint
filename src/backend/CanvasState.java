@@ -3,28 +3,52 @@ package backend;
 import backend.model.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CanvasState {
 
-    private final Map<String, List<Figure>> figuresByKind= new HashMap<>();
+    private final Deque<Figure> allFigures = new LinkedList<>();
+    private final Map<Boolean, List<Figure1D>> figures1DBySelectProperty = new HashMap<>();
+    private final Map<Boolean, List<Figure2D>> figures2DBySelectProperty = new HashMap<>();
     private final List<Figure1D> figures1D = new ArrayList<>();
     private final List<Figure2D> figures2D = new ArrayList<>();
 
-    private final Map<String, List<Figure>> selectedFiguresByKind= new HashMap<>();
-    private final List<Figure2D> selectedFigures2D = new ArrayList<>();
-    private final List<Figure1D> selectedFigures1D = new ArrayList<>();
-
-    public void addFigure(Figure figure) {
-        figuresByKind.putIfAbsent(figure.getClass().getSimpleName(), new ArrayList<>());
-        figuresByKind.get(figure.getClass().getSimpleName()).add(figure);
+    public void addFigure1D(Figure1D figure) {
+        figures1DBySelectProperty.putIfAbsent(false, new ArrayList<>());
+        figures1DBySelectProperty.get(false).add(figure);
+        allFigures.add(figure);
+        figures1D.add(figure);
     }
 
-    public List<Figure> figures() {
-        List<Figure> figures = new ArrayList<>();
-        for(Map.Entry<String, List<Figure>> figure : figuresByKind.entrySet()){
-            figures.addAll(figure.getValue());
+    public void addFigure2D(Figure2D figure){
+        figures2DBySelectProperty.putIfAbsent(false, new ArrayList<>());
+        figures2DBySelectProperty.get(false).add(figure);
+        allFigures.add(figure);
+        figures2D.add(figure);
+    }
+
+    public boolean removeFigure(Figure figure){
+        boolean figureRemoved;
+        figureRemoved = figures1DBySelectProperty.get(true).remove(figure);
+        figureRemoved = figures2DBySelectProperty.get(true).remove(figure);
+        figureRemoved = figures1D.remove(figure);
+        figureRemoved = figures2D.remove(figure);
+        figureRemoved = allFigures.remove(figure);
+
+        return figureRemoved;
+    }
+
+    public void unSelectAllFigures(){
+        for(Figure figure : figures()){
+            if(figure.isSelected()){
+                figure.unselect();
+            }
         }
-        return figures;
+    }
+
+    public Deque<Figure> figures() {
+        return allFigures;
     }
 
     public List<Figure1D> getFigures1D() {
@@ -35,17 +59,21 @@ public class CanvasState {
         return figures2D;
     }
 
-    public List<Figure> getSelectedFigures() {
-        List<Figure> selectedFigures = new ArrayList<>();
-        for(Figure figure : figures()){
-            if(figure.isSelected()){
-                selectedFigures.add(figure);
-            }
-        }
-        return selectedFigures;
+    public List<Figure1D> getSelectedFigures1D() {
+        return figures1DBySelectProperty.getOrDefault(true, new ArrayList<>());
     }
 
     public List<Figure2D> getSelectedFigures2D() {
-        return selectedFigures2D;
+        return figures2DBySelectProperty.getOrDefault(true, new ArrayList<>());
+    }
+
+    public List<Figure> getSelectedFigures() {
+        return Stream.of(getSelectedFigures1D(), getSelectedFigures2D())
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toList());
+    }
+
+    public boolean isAFigureSelected(){
+        return !getSelectedFigures().isEmpty();
     }
 }

@@ -18,6 +18,7 @@ public class ToolPane extends BorderPane {
     ToggleButton squareButton = new ToggleButton("Cuadrado");
     ToggleButton circleButton = new ToggleButton("Círculo");
     ToggleButton ellipseButton = new ToggleButton("Elipse");
+    Button deleteButton = new Button("Borrar");
 
     Slider borderSlider = new Slider(0, 50, 0);
     ColorPicker borderCp = new ColorPicker();
@@ -38,10 +39,12 @@ public class ToolPane extends BorderPane {
             tool.setToggleGroup(tools);
             tool.setCursor(Cursor.HAND);
         }
-
+        deleteButton.setMinWidth(100);
+        deleteButton.setCursor(Cursor.HAND);
         // Button container
         VBox buttonsBox = new VBox(10);
         buttonsBox.getChildren().addAll(toolsArr);
+        buttonsBox.getChildren().add(deleteButton);
 
         // Border container
         VBox borderBox = new VBox(10);

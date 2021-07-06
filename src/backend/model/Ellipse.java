@@ -10,6 +10,11 @@ public class Ellipse extends Figure2D {
         this.verticalAxis = minorAxis;
     }
 
+    @Override
+    public MovablePoint[] getPoints() {
+        return new MovablePoint[]{(MovablePoint) centerPoint};
+    }
+
     public Point getCenterPoint() {
         return centerPoint;
     }

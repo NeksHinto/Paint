@@ -7,6 +7,11 @@ public class Circle extends Ellipse{
     }
 
     @Override
+    public MovablePoint[] getPoints() {
+        return new MovablePoint[]{(MovablePoint) centerPoint};
+    }
+
+    @Override
     public String toString() {
         return String.format("Círculo [Centro: %s, Radio: %.2f]", getCenterPoint(), getHorizontalAxis()/2);
     }

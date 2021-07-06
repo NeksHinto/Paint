@@ -8,7 +8,10 @@ public class Line extends Figure1D {
         this.endPoint = endPoint;
     }
 
-    public Point getStartPoint() {
+    @Override
+    public MovablePoint[] getPoints() {
+        return new MovablePoint[]{(MovablePoint) startPoint, (MovablePoint) endPoint};
+    }    public Point getStartPoint() {
         return startPoint;
     }
 

@@ -72,7 +72,7 @@ public class PaintPane extends BorderPane {
 				boolean figureSelected = false;
 				StringBuilder label = new StringBuilder("Se seleccionó: ");
 				for (Figure figure : canvasState.figures()) {
-					if(figureBelongs(figure, eventPoint)) {
+					if(figureBelongs(figure, eventPoint) && !figure.isSelected) {
 						figureSelected = true;
 						figure.select();
 						label.append(figure.toString());
@@ -84,6 +84,8 @@ public class PaintPane extends BorderPane {
 					statusPane.updateStatus("Ninguna figura encontrada");
 				}
 				drawCanvas();
+                // Clear selection button
+                toolPane.selectionButton.setSelected(false);
 			} else {
 				canvasState.unSelectAllFigures();
 			}
@@ -137,7 +139,7 @@ public class PaintPane extends BorderPane {
 	void selectFigures(Rectangle area){
 		for(Figure figure : canvasState.figures()){
 			if(figure.inside(area)){
-				figure.select();
+				canvasState.selectFigure(figure);
 			}
 		}
 	}
@@ -151,6 +153,13 @@ public class PaintPane extends BorderPane {
 	void setSelectedFiguresBorderColor(){
 		for(Figure figure : canvasState.getSelectedFigures()){
 			figure.setBorderColor(fillColor.toString());
+		}
+	}
+
+	void setSelectedFiguresBorderWidth(){
+		for(Figure figure : canvasState.getSelectedFigures()){
+			System.out.println(figure);
+			figure.setBorderWidth(lineWidth);
 		}
 	}
 
@@ -187,13 +196,7 @@ public class PaintPane extends BorderPane {
 	}
 
 	void clearFigures(List<Figure> figuresToDelete){
-		for(Figure figure : figuresToDelete){
-			deleteFigure(figure);
-		}
-	}
-
-	void deleteFigure(Figure figure){
-		canvasState.removeFigure(figure);
+		canvasState.removeFigures(figuresToDelete);
 	}
 
 	void moveFigures(Point endPoint){
@@ -202,7 +205,7 @@ public class PaintPane extends BorderPane {
 		double diffY = (endPoint.getY() - startPoint.getY());
 		// Each figure must know how to move
 		for(Figure figure : canvasState.getSelectedFigures()){
-			System.out.println(figure);
+			System.out.println("FIGURA A MOVER:" + figure);
 			figure.move(diffX, diffY);
 		}
 	}
@@ -210,33 +213,42 @@ public class PaintPane extends BorderPane {
 	void setToolPaneListeners(){
 		toolPane.getBorderSlider().valueProperty().addListener((ov, old_val, new_val) -> {
 			gc.setLineWidth((double) new_val);
+			drawCanvas();
+			lineWidth = (double) new_val;
+			setSelectedFiguresBorderWidth();
 		});
 
-		toolPane.getBorderCp().setOnAction(event -> {
-			lineColor = toolPane.borderCp.getValue();
+		toolPane.getBorderCp().valueProperty().addListener((ov, old_val, new_val) -> {
+			gc.setStroke(new_val);
+			drawCanvas();
 			setSelectedFiguresBorderColor();
 		});
 
-		toolPane.getFillingCp().setOnAction(event -> {
-			fillColor = toolPane.fillingCp.getValue();
+		toolPane.getFillingCp().valueProperty().addListener((ov, old_val, new_val) -> {
+			gc.setFill(new_val);
+			drawCanvas();
+			fillColor = new_val;
 			setSelectedFiguresFillingColor();
 		});
 
 		toolPane.deleteButton.setOnAction(event -> {
-			if(canvasState.isAFigureSelected()){
-				clearFigures(canvasState.getSelectedFigures());
-			}
-			canvasState.unSelectAllFigures();
+			clearFigures(canvasState.getSelectedFigures());
+			drawCanvas();
 		});
 
 		// Selected toggle button listener
 		toolPane.tools.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-				System.out.println(newValue);
-				selectedButton = (FigureButton) newValue;
+                if(newValue instanceof FigureButton){
+                    selectedButton = (FigureButton) newValue;
+                }
 			}
 		});
+	}
+
+	void removeFigures(){
+		canvasState.removeAllSelectedFigures();
 	}
 
 	boolean invalidMouseDrag(Point endPoint) {

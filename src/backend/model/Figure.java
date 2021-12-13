@@ -6,10 +6,9 @@ public abstract class Figure implements DrawableFigure, MovableFigure, Selectabl
 
     public String borderColor;
     public boolean isSelected;
+    public double borderWidth;
 
-    public boolean belongs(Point point){
-        return this.belongs(point);
-    }
+    public abstract boolean belongs(Point point);
 
     // Checks if "this" figure is inside figure (parameter)
     // by checking if all "this" figure's points belong to figure (parameter)
@@ -28,6 +27,10 @@ public abstract class Figure implements DrawableFigure, MovableFigure, Selectabl
 
     public void setBorderColor(String color){
         borderColor = color;
+    }
+
+    public void setBorderWidth(double width){
+        borderWidth = width;
     }
 
     public String getBorderColor() {

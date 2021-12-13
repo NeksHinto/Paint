@@ -1,6 +1,8 @@
 package backend.model;
 
-public class Line extends Figure1D {
+import javafx.scene.canvas.GraphicsContext;
+
+public class Line extends Figure {
     protected Point startPoint, endPoint;
 
     public Line(Point startPoint, Point endPoint) {
@@ -24,7 +26,6 @@ public class Line extends Figure1D {
         return startPoint.distanceTo(point) + endPoint.distanceTo(point) == length();
     }
 
-    @Override
     public double length() {
         return startPoint.distanceTo(endPoint);
     }
@@ -32,5 +33,10 @@ public class Line extends Figure1D {
     @Override
     public String toString() {
         return String.format("Línea [ %s , %s ]", startPoint, endPoint);
+    }
+
+    @Override
+    public void draw(GraphicsContext gc) {
+        gc.strokeLine(getStartPoint().getX(), getStartPoint().getY(), getEndPoint().getX(), getEndPoint().getY());
     }
 }

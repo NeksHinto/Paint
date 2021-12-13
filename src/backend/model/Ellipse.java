@@ -1,6 +1,8 @@
 package backend.model;
 
-public class Ellipse extends Figure2D {
+import javafx.scene.canvas.GraphicsContext;
+
+public class Ellipse extends Figure {
     protected Point centerPoint;
     private double horizontalAxis, verticalAxis;
 
@@ -31,22 +33,18 @@ public class Ellipse extends Figure2D {
         return verticalAxis;
     }
 
-    @Override
     public double width() {
         return getHorizontalAxis();
     }
 
-    @Override
     public double height() {
         return getVerticalAxis();
     }
 
-    @Override
     public double area() {
         return Math.PI / 4 * horizontalAxis * verticalAxis;
     }
 
-    @Override
     public double perimeter() {
         return Math.PI / 2 * (horizontalAxis + verticalAxis);
     }
@@ -60,5 +58,11 @@ public class Ellipse extends Figure2D {
     @Override
     public String toString() {
         return String.format("Elipse [Centro: %s, DHorizontal: %.2f, DVertical: %.2f]", centerPoint, horizontalAxis, verticalAxis);
+    }
+
+    @Override
+    public void draw(GraphicsContext gc) {
+        gc.fillOval(getTopLeft().getX(), getTopLeft().getY(), width(), height());
+        gc.strokeOval(getTopLeft().getX(), getTopLeft().getY(), width(), height());
     }
 }

@@ -1,13 +1,16 @@
 package backend.model;
 
-public abstract class Figure implements MovableFigure{
+public abstract class Figure implements DrawableFigure, MovableFigure, SelectableFigure {
 
     public static final String SELECTED_BORDER_COLOR = "red";
 
     public String borderColor;
     public boolean isSelected;
 
-    public abstract boolean belongs(Point point);
+    public boolean belongs(Point point){
+        return this.belongs(point);
+    }
+
     // Checks if "this" figure is inside figure (parameter)
     // by checking if all "this" figure's points belong to figure (parameter)
     public boolean inside(Figure figure){
@@ -19,6 +22,10 @@ public abstract class Figure implements MovableFigure{
         return true;
     }
 
+    public void setFillingColor(String color){
+        this.setFillingColor(color);
+    }
+
     public void setBorderColor(String color){
         borderColor = color;
     }
@@ -27,16 +34,18 @@ public abstract class Figure implements MovableFigure{
         return borderColor;
     }
 
-    public void select(){
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    @Override
+    public void select() {
         isSelected = true;
         setBorderColor(SELECTED_BORDER_COLOR);
     }
 
-    public void unselect(){
+    @Override
+    public void unselect() {
         isSelected = false;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
     }
 }

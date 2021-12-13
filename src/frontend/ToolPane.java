@@ -1,5 +1,6 @@
 package frontend;
 
+import backend.model.*;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -11,13 +12,15 @@ public class ToolPane extends BorderPane {
 
     VBox menu = new VBox(15);
 
-    // Left panel toggle buttons
+    // Toggle buttons
+    ToggleGroup tools;
     ToggleButton selectionButton = new ToggleButton("Seleccionar");
-    ToggleButton lineButton = new ToggleButton("Línea");
-    ToggleButton rectangleButton = new ToggleButton("Rectángulo");
-    ToggleButton squareButton = new ToggleButton("Cuadrado");
-    ToggleButton circleButton = new ToggleButton("Círculo");
-    ToggleButton ellipseButton = new ToggleButton("Elipse");
+    ToggleButton lineButton = new LineButton();
+    ToggleButton rectangleButton = new RectangleButton();
+    ToggleButton squareButton = new SquareButton();
+    ToggleButton circleButton = new CircleButton();
+    ToggleButton ellipseButton = new EllipseButton();
+    // Delete button
     Button deleteButton = new Button("Borrar");
 
     Slider borderSlider = new Slider(0, 50, 0);
@@ -32,7 +35,7 @@ public class ToolPane extends BorderPane {
         this.fillingCp.setValue(fillColor);
         Label fillingLabel = new Label("Relleno");
         // Components group (buttons)
-        ToggleGroup tools = new ToggleGroup();
+        tools = new ToggleGroup();
         ToggleButton[] toolsArr = {selectionButton, lineButton, rectangleButton, squareButton, ellipseButton, circleButton};
         for (ToggleButton tool : toolsArr) {
             tool.setMinWidth(100);

@@ -1,6 +1,8 @@
 package backend.model;
 
-public class Rectangle extends Figure2D {
+import javafx.scene.canvas.GraphicsContext;
+
+public class Rectangle extends Figure {
 
     protected final Point topLeft, bottomRight;
 
@@ -26,22 +28,18 @@ public class Rectangle extends Figure2D {
         return Math.abs(topLeft.getX() - bottomRight.getX());
     }
 
-    @Override
     public double width() {
         return Math.abs(topLeft.getX() - bottomRight.getX());
     }
 
-    @Override
     public double height() {
         return Math.abs(topLeft.getY() - bottomRight.getY());
     }
 
-    @Override
     public double area() {
         return base() * height();
     }
 
-    @Override
     public double perimeter() {
         return (base() + height()) * 2;
     }
@@ -57,4 +55,9 @@ public class Rectangle extends Figure2D {
         return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
     }
 
+    @Override
+    public void draw(GraphicsContext gc) {
+        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(), width(), height());
+        gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(), width(), height());
+    }
 }

@@ -16,5 +16,4 @@ public class Square extends Rectangle {
         return new MovablePoint[]{(MovablePoint) topLeft, (MovablePoint) bottomRight};
     }
 
-
 }

@@ -1,5 +1,7 @@
 package backend.model;
 
+import javafx.scene.canvas.GraphicsContext;
+
 public class Square extends Rectangle {
 
     public Square(Point topLeft, Point bottomRight) {
@@ -16,4 +18,9 @@ public class Square extends Rectangle {
         return new MovablePoint[]{(MovablePoint) topLeft, (MovablePoint) bottomRight};
     }
 
+    @Override
+    public void draw(GraphicsContext gc) {
+        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(), width(), width());
+        gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(), width(), width());
+    }
 }

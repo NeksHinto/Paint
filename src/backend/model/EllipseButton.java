@@ -1,5 +1,7 @@
 package backend.model;
 
+import javafx.scene.canvas.GraphicsContext;
+
 public class EllipseButton extends FigureButton {
     public static final String ELLIPSE_BUTTON_TEXT = "Elipse";
     double horizontalDistance;

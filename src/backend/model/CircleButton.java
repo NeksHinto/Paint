@@ -2,7 +2,7 @@ package backend.model;
 
 public class CircleButton extends FigureButton {
     public static final String CIRCLE_BUTTON_TEXT = "Círculo";
-    double circleDiameter;
+    double circleRadius;
 
     public CircleButton() {
         super(CIRCLE_BUTTON_TEXT);
@@ -10,7 +10,7 @@ public class CircleButton extends FigureButton {
 
     @Override
     public Figure returnFigureToDraw(Point start, Point end) {
-        circleDiameter = Math.abs(end.getX() - start.getX());
-        return new Circle(start, circleDiameter);
+        circleRadius = Math.sqrt(Math.pow(end.getX() - start.getX(), 2) + Math.pow(end.getY() - start.getY(), 2));
+        return new Circle(start, circleRadius);
     }
 }

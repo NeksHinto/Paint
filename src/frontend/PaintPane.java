@@ -111,9 +111,7 @@ public class PaintPane extends BorderPane {
 				// TODO error popup
 				return ;
 			}
-
 			Figure newFigure = null;
-			newFigure = selectedButton.returnFigureToDraw(startPoint, endPoint);
 
 			// Transparent rectangle for multiple selection
 			if(toolPane.selectionButton.isSelected()){
@@ -122,10 +120,11 @@ public class PaintPane extends BorderPane {
 				areaSelected.setBorderColor(Color.TRANSPARENT.toString());
 				selectFigures(areaSelected);
 			} else {
-				return ;
+				newFigure = selectedButton.returnFigureToDraw(startPoint, endPoint);
 			}
 			if(newFigure != null){
 				canvasState.addFigure(newFigure);
+
 			}
 			startPoint = null;
 			drawCanvas();

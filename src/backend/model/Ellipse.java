@@ -62,7 +62,7 @@ public class Ellipse extends Figure {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.fillOval(getTopLeft().getX(), getTopLeft().getY(), width(), height());
-        gc.strokeOval(getTopLeft().getX(), getTopLeft().getY(), width(), height());
+        gc.fillOval(getTopLeft().getX(), getTopLeft().getY(), width()*2, height()*2);
+        gc.strokeOval(getTopLeft().getX(), getTopLeft().getY(), width()*2, height()*2);
     }
 }

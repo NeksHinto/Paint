@@ -26,6 +26,8 @@ public class ToolPane extends BorderPane {
     Button bringToFront = new Button("Traer al frente");
     Button sendToBack = new Button("Llevar al fondo");
 
+    Button undo = new Button("Deshacer");
+    Button redo = new Button("Rehacer");
 
     Slider borderSlider = new Slider(0, 50, 0);
     ColorPicker borderCp = new ColorPicker();
@@ -54,6 +56,8 @@ public class ToolPane extends BorderPane {
         buttonsBox.getChildren().add(deleteButton);
         buttonsBox.getChildren().add(bringToFront);
         buttonsBox.getChildren().add(sendToBack);
+        buttonsBox.getChildren().add(undo);
+        buttonsBox.getChildren().add(redo);
 
         // Border container
         VBox borderBox = new VBox(10);

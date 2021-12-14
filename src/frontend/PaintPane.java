@@ -258,6 +258,16 @@ public class PaintPane extends BorderPane {
 			drawCanvas();
 		});
 
+		toolPane.undo.setOnAction(event -> {
+			canvasState.undo();
+			drawCanvas();
+		});
+
+		toolPane.redo.setOnAction(event -> {
+			canvasState.redo();
+			drawCanvas();
+		});
+
 		// Selected toggle button listener
 		toolPane.tools.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override

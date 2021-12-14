@@ -6,7 +6,9 @@ import java.util.*;
 
 public class CanvasState {
 
-    private final Deque<Figure> allFigures = new LinkedList<>();
+    private Deque<Figure> allFigures = new LinkedList<>();
+    private final List<Deque<Figure>> history = new ArrayList<>();
+    private int currentStateIndex = 0;
     private final Map<Boolean, List<Figure>> figuresBySelectProperty = new HashMap<>();
 
     public CanvasState() {
@@ -18,6 +20,34 @@ public class CanvasState {
         // System.out.println("ADDDDDDDDDD");
         figuresBySelectProperty.get(false).add(figure);
         allFigures.add(figure);
+        // Add current canvas state to history
+        history.add(currentStateIndex, new LinkedList<>());
+        history.get(currentStateIndex++).addAll(allFigures);
+        System.out.println(history);
+    }
+
+    public void undo(){
+        Deque<Figure> previousState = null;
+        if(canUndo()){
+            previousState = history.get(--currentStateIndex);
+            allFigures = previousState;
+        }
+    }
+
+    public boolean canUndo(){
+        return currentStateIndex > 0;
+    }
+
+    public boolean canRedo(){
+        return currentStateIndex < history.size()-1;
+    }
+
+    public void redo(){
+        Deque<Figure> previousState = null;
+        if(canRedo()){
+            previousState = history.get(++currentStateIndex);
+            allFigures = previousState;
+        }
     }
 
     public boolean removeFigures(List<Figure> figuresToRemove){

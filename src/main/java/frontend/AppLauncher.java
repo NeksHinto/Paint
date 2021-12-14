@@ -22,8 +22,8 @@ public class AppLauncher extends Application {
 
 		primaryStage.setResizable(false);
 		primaryStage.setTitle("Paint 1.0");
-		Image icon = new Image("/frontend/bucket.jpg");
-		primaryStage.getIcons().add(icon);
+//		Image icon = new Image("/frontend/bucket.jpg");
+//		primaryStage.getIcons().add(icon);
 
 		// Add the Scene to the Stage
 		primaryStage.setScene(scene);

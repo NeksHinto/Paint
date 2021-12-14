@@ -14,6 +14,7 @@ public class CanvasState {
     public CanvasState() {
         figuresBySelectProperty.putIfAbsent(false, new ArrayList<>());
         figuresBySelectProperty.putIfAbsent(true, new ArrayList<>());
+        history.add(currentStateIndex, new LinkedList<>());
     }
 
     public void addFigure(Figure figure) {
@@ -48,8 +49,8 @@ public class CanvasState {
 
     private void updateHistory(){
         // Add current canvas state to history
-        history.add(currentStateIndex, new LinkedList<>());
-        history.get(currentStateIndex++).addAll(allFigures);
+        history.add(++currentStateIndex, new LinkedList<>());
+        history.get(currentStateIndex).addAll(allFigures);
     }
 
     public boolean removeFigures(List<Figure> figuresToRemove){

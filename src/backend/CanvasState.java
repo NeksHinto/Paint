@@ -15,19 +15,9 @@ public class CanvasState {
     }
 
     public void addFigure(Figure figure) {
+        System.out.println("ADDDDDDDDDD");
         figuresBySelectProperty.get(false).add(figure);
         allFigures.add(figure);
-    }
-
-    public boolean removeAllSelectedFigures(){
-        boolean figureRemoved = false;
-        if(isAFigureSelected()){
-            figureRemoved = removeFigures(figuresBySelectProperty.get(true));
-            System.out.println("REMOVED FROM allFigures: "+ figureRemoved);
-            figureRemoved = figuresBySelectProperty.keySet().removeIf(key -> key);
-            System.out.println("REMOVED FROM figuresBySelectProperty: "+ figureRemoved);
-        }
-        return figureRemoved;
     }
 
     public boolean removeFigures(List<Figure> figuresToRemove){
@@ -53,20 +43,29 @@ public class CanvasState {
     }
 
     public void selectFigure(Figure figure){
-        System.out.println(figure.isSelected);
         figure.select();
         figuresBySelectProperty.get(false).remove(figure);
         figuresBySelectProperty.get(true).add(figure);
-        System.out.println(figuresBySelectProperty);
+        System.out.println("AFTER SELECTING: "+figuresBySelectProperty);
 
+    }
+
+    public void unselectFigure(Figure figure){
+        figure.unselect();
+        figuresBySelectProperty.get(true).remove(figure);
+        figuresBySelectProperty.get(false).add(figure);
+        System.out.println("AFTER UNSELECTING: "+figuresBySelectProperty);
     }
 
     public void unSelectAllFigures(){
         for(Figure figure : figures()){
             if(figure.isSelected()){
-                figure.unselect();
+                System.out.println("UNSELECT FIG: "+figure);
+                unselectFigure(figure);
             }
         }
+        System.out.println(allFigures);
+        System.out.println(figuresBySelectProperty);
     }
 
     public Deque<Figure> figures() {
@@ -78,6 +77,15 @@ public class CanvasState {
     }
 
     public boolean isAFigureSelected(){
+        System.out.println(getSelectedFigures());
         return !getSelectedFigures().isEmpty();
+    }
+
+    public void moveSelectedFigures(double x, double y) {
+        // Each figure must know how to move
+        for(Figure figure : getSelectedFigures()){
+            System.out.println("FIGURA A MOVER:" + figure);
+            figure.move(x, y);
+        }
     }
 }

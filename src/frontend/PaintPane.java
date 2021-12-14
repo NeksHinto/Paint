@@ -29,7 +29,7 @@ public class PaintPane extends BorderPane {
 	// Left menu
 	ToolPane toolPane = new ToolPane(lineColor, fillColor);
 
-	FigureButton selectedButton;
+	FigureButton selectedFigureButton;
 
 	// Dibujar una figura
 	MovablePoint startPoint;
@@ -99,9 +99,14 @@ public class PaintPane extends BorderPane {
 		// Event: Dragged Mouse
 		canvas.setOnMouseDragged(event -> {
 			// Move selected figures, if there are any
-			if(toolPane.selectionButton.isSelected()) {
+			if(!toolPane.selectionButton.isSelected() && !selectedFigureButton.isSelected() && canvasState.isAFigureSelected()) {
+				System.out.println("MOVER");
 				Point eventPoint = new Point(event.getX(), event.getY());
 				moveFigures(eventPoint);
+				// Unselect figures
+				canvasState.unSelectAllFigures();
+				// Clear selection button
+				toolPane.selectionButton.setSelected(false);
 				drawCanvas();
 			}
 		});
@@ -121,14 +126,16 @@ public class PaintPane extends BorderPane {
 				areaSelected.setBorderColor(Color.TRANSPARENT.toString());
 				areaSelected.setBorderColor(Color.TRANSPARENT.toString());
 				selectFigures(areaSelected);
-			} else {
-				newFigure = selectedButton.returnFigureToDraw(startPoint, endPoint);
+			} else if (selectedFigureButton.isSelected()){
+				newFigure = selectedFigureButton.returnFigureToDraw(startPoint, endPoint);
 			}
 			if(newFigure != null){
+				System.out.println("SELECTED FIG BUTTON IS SELECTED: "+ selectedFigureButton);
 				canvasState.addFigure(newFigure);
-
 			}
 			startPoint = null;
+			// Clear selected figure button
+			selectedFigureButton.setSelected(false);
 			drawCanvas();
 		});
 
@@ -203,11 +210,7 @@ public class PaintPane extends BorderPane {
 		// Cursor offsets
 		double diffX = (endPoint.getX() - startPoint.getX());
 		double diffY = (endPoint.getY() - startPoint.getY());
-		// Each figure must know how to move
-		for(Figure figure : canvasState.getSelectedFigures()){
-			System.out.println("FIGURA A MOVER:" + figure);
-			figure.move(diffX, diffY);
-		}
+		canvasState.moveSelectedFigures(diffX, diffY);
 	}
 
 	void setToolPaneListeners(){
@@ -241,14 +244,10 @@ public class PaintPane extends BorderPane {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if(newValue instanceof FigureButton){
-                    selectedButton = (FigureButton) newValue;
+                    selectedFigureButton = (FigureButton) newValue;
                 }
 			}
 		});
-	}
-
-	void removeFigures(){
-		canvasState.removeAllSelectedFigures();
 	}
 
 	boolean invalidMouseDrag(Point endPoint) {

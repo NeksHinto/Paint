@@ -55,6 +55,22 @@ public class CanvasState {
         return false;
     }
 
+    public void bringToFront(List<Figure> figures){
+        removeFigures(figures);
+        for(Figure figure : figures){
+            // Draws from back to front, first element to last respectively
+            allFigures.addLast(figure);
+        }
+    }
+
+    public void sendToBack(List<Figure> figures){
+        removeFigures(figures);
+        for(Figure figure : figures){
+            // Draws from back to front, first element to last respectively
+            allFigures.addFirst(figure);
+        }
+    }
+
     public void selectFigure(Figure figure){
         figure.select();
         removeFigure(figure, false);

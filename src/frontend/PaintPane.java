@@ -214,6 +214,14 @@ public class PaintPane extends BorderPane {
 		canvasState.moveSelectedFigures(diffX, diffY);
 	}
 
+	void bringToFrontSelectedFigures(List<Figure> figures){
+		canvasState.bringToFront(figures);
+	}
+
+	void sendToBackSelectedFigures(List<Figure> figures){
+		canvasState.sendToBack(figures);
+	}
+
 	void setToolPaneListeners(){
 		toolPane.getBorderSlider().valueProperty().addListener((ov, old_val, new_val) -> {
 			gc.setLineWidth((double) new_val);
@@ -237,6 +245,16 @@ public class PaintPane extends BorderPane {
 
 		toolPane.deleteButton.setOnAction(event -> {
 			clearFigures(canvasState.getSelectedFigures());
+			drawCanvas();
+		});
+
+		toolPane.bringToFront.setOnAction(event -> {
+			bringToFrontSelectedFigures(canvasState.getSelectedFigures());
+			drawCanvas();
+		});
+
+		toolPane.sendToBack.setOnAction(event -> {
+			sendToBackSelectedFigures(canvasState.getSelectedFigures());
 			drawCanvas();
 		});
 

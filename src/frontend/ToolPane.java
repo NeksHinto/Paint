@@ -23,6 +23,10 @@ public class ToolPane extends BorderPane {
     // Delete button
     Button deleteButton = new Button("Borrar");
 
+    Button bringToFront = new Button("Traer al frente");
+    Button sendToBack = new Button("Llevar al fondo");
+
+
     Slider borderSlider = new Slider(0, 50, 0);
     ColorPicker borderCp = new ColorPicker();
     ColorPicker fillingCp = new ColorPicker();
@@ -48,6 +52,8 @@ public class ToolPane extends BorderPane {
         VBox buttonsBox = new VBox(10);
         buttonsBox.getChildren().addAll(toolsArr);
         buttonsBox.getChildren().add(deleteButton);
+        buttonsBox.getChildren().add(bringToFront);
+        buttonsBox.getChildren().add(sendToBack);
 
         // Border container
         VBox borderBox = new VBox(10);

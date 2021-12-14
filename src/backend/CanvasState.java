@@ -17,13 +17,9 @@ public class CanvasState {
     }
 
     public void addFigure(Figure figure) {
-        // System.out.println("ADDDDDDDDDD");
         figuresBySelectProperty.get(false).add(figure);
         allFigures.add(figure);
-        // Add current canvas state to history
-        history.add(currentStateIndex, new LinkedList<>());
-        history.get(currentStateIndex++).addAll(allFigures);
-        System.out.println(history);
+        updateHistory();
     }
 
     public void undo(){
@@ -50,6 +46,12 @@ public class CanvasState {
         }
     }
 
+    private void updateHistory(){
+        // Add current canvas state to history
+        history.add(currentStateIndex, new LinkedList<>());
+        history.get(currentStateIndex++).addAll(allFigures);
+    }
+
     public boolean removeFigures(List<Figure> figuresToRemove){
         boolean figureRemoved = false;
         Iterator<Figure> iter = allFigures.iterator();
@@ -60,6 +62,7 @@ public class CanvasState {
                 figureRemoved = true;
             }
         }
+        updateHistory();
         return figureRemoved;
     }
 
@@ -91,6 +94,7 @@ public class CanvasState {
             // Draws from back to front, first element to last respectively
             allFigures.addLast(figure);
         }
+        updateHistory();
     }
 
     public void sendToBack(List<Figure> figures){
@@ -99,31 +103,27 @@ public class CanvasState {
             // Draws from back to front, first element to last respectively
             allFigures.addFirst(figure);
         }
+        updateHistory();
     }
 
     public void selectFigure(Figure figure){
         figure.select();
         removeFigure(figure, false);
         figuresBySelectProperty.get(true).add(figure);
-        System.out.println("AFTER SELECTING: "+figuresBySelectProperty);
     }
 
     public void unselectFigure(Figure figure){
         figure.unselect();
         removeFigure(figure, true);
         figuresBySelectProperty.get(false).add(figure);
-        System.out.println("AFTER UNSELECTING: "+figuresBySelectProperty);
     }
 
     public void unSelectAllFigures(){
         for(Figure figure : figures()){
             if(figure.isSelected()){
-                //System.out.println("UNSELECT FIG: "+figure);
                 unselectFigure(figure);
             }
         }
-        //System.out.println("ALL FIGURES AFTER UNSELECTALL:"+allFigures);
-        //System.out.println(figuresBySelectProperty);
     }
 
     public Deque<Figure> figures() {
@@ -135,14 +135,12 @@ public class CanvasState {
     }
 
     public boolean isAFigureSelected(){
-        System.out.println("GetSelectedFigs"+getSelectedFigures());
         return !getSelectedFigures().isEmpty();
     }
 
     public void moveSelectedFigures(double x, double y) {
         // Each figure must know how to move
         for(Figure figure : getSelectedFigures()){
-            // System.out.println("FIGURA A MOVER:" + figure);
             figure.move(x, y);
         }
     }

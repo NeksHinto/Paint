@@ -100,10 +100,8 @@ public class PaintPane extends BorderPane {
 		canvas.setOnMouseDragged(event -> {
 			// Move selected figures, if there are any
 			if(!toolPane.selectionButton.isSelected() && !selectedFigureButton.isSelected() && canvasState.isAFigureSelected()) {
-				System.out.println("MOVER");
 				MovablePoint eventPoint = new MovablePoint(event.getX(), event.getY());
 				moveFigures(eventPoint);
-				System.out.println("Back in Pane"+canvasState.figures());
 				startPoint = eventPoint;
 				drawCanvas();
 				// Clear selection button
@@ -130,7 +128,6 @@ public class PaintPane extends BorderPane {
 				newFigure = selectedFigureButton.returnFigureToDraw(startPoint, endPoint);
 			}
 			if(newFigure != null){
-				//System.out.println("SELECTED FIG BUTTON IS SELECTED: "+ selectedFigureButton);
 				canvasState.addFigure(newFigure);
 			}
 			startPoint = null;
@@ -165,14 +162,12 @@ public class PaintPane extends BorderPane {
 
 	void setSelectedFiguresBorderWidth(){
 		for(Figure figure : canvasState.getSelectedFigures()){
-			//System.out.println(figure);
 			figure.setBorderWidth(lineWidth);
 		}
 	}
 
 	// Redraw entire canvas
 	void drawCanvas() {
-		System.out.println("DRAW CANVASSSSSSSSS");
 		// Clear canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 

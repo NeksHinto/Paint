@@ -15,7 +15,7 @@ public class CanvasState {
     }
 
     public void addFigure(Figure figure) {
-        System.out.println("ADDDDDDDDDD");
+        // System.out.println("ADDDDDDDDDD");
         figuresBySelectProperty.get(false).add(figure);
         allFigures.add(figure);
     }
@@ -26,6 +26,19 @@ public class CanvasState {
         while(iter.hasNext()){
             Figure toRemove = iter.next();
             if(shouldRemove(toRemove, figuresToRemove)){
+                iter.remove();
+                figureRemoved = true;
+            }
+        }
+        return figureRemoved;
+    }
+
+    public boolean removeFigure(Figure figureToRemove, boolean key){
+        boolean figureRemoved = false;
+        Iterator<Figure> iter = figuresBySelectProperty.get(key).iterator();
+        while(iter.hasNext()){
+            Figure toRemove = iter.next();
+            if(toRemove.equals(figureToRemove)){
                 iter.remove();
                 figureRemoved = true;
             }
@@ -44,15 +57,14 @@ public class CanvasState {
 
     public void selectFigure(Figure figure){
         figure.select();
-        figuresBySelectProperty.get(false).remove(figure);
+        removeFigure(figure, false);
         figuresBySelectProperty.get(true).add(figure);
         System.out.println("AFTER SELECTING: "+figuresBySelectProperty);
-
     }
 
     public void unselectFigure(Figure figure){
         figure.unselect();
-        figuresBySelectProperty.get(true).remove(figure);
+        removeFigure(figure, true);
         figuresBySelectProperty.get(false).add(figure);
         System.out.println("AFTER UNSELECTING: "+figuresBySelectProperty);
     }
@@ -60,12 +72,12 @@ public class CanvasState {
     public void unSelectAllFigures(){
         for(Figure figure : figures()){
             if(figure.isSelected()){
-                System.out.println("UNSELECT FIG: "+figure);
+                //System.out.println("UNSELECT FIG: "+figure);
                 unselectFigure(figure);
             }
         }
-        System.out.println(allFigures);
-        System.out.println(figuresBySelectProperty);
+        //System.out.println("ALL FIGURES AFTER UNSELECTALL:"+allFigures);
+        //System.out.println(figuresBySelectProperty);
     }
 
     public Deque<Figure> figures() {
@@ -77,14 +89,14 @@ public class CanvasState {
     }
 
     public boolean isAFigureSelected(){
-        System.out.println(getSelectedFigures());
+        System.out.println("GetSelectedFigs"+getSelectedFigures());
         return !getSelectedFigures().isEmpty();
     }
 
     public void moveSelectedFigures(double x, double y) {
         // Each figure must know how to move
         for(Figure figure : getSelectedFigures()){
-            System.out.println("FIGURA A MOVER:" + figure);
+            // System.out.println("FIGURA A MOVER:" + figure);
             figure.move(x, y);
         }
     }

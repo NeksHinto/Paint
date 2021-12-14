@@ -74,7 +74,7 @@ public class PaintPane extends BorderPane {
 				for (Figure figure : canvasState.figures()) {
 					if(figureBelongs(figure, eventPoint) && !figure.isSelected) {
 						figureSelected = true;
-						figure.select();
+						canvasState.selectFigure(figure);
 						label.append(figure.toString());
 					}
 				}
@@ -101,13 +101,13 @@ public class PaintPane extends BorderPane {
 			// Move selected figures, if there are any
 			if(!toolPane.selectionButton.isSelected() && !selectedFigureButton.isSelected() && canvasState.isAFigureSelected()) {
 				System.out.println("MOVER");
-				Point eventPoint = new Point(event.getX(), event.getY());
+				MovablePoint eventPoint = new MovablePoint(event.getX(), event.getY());
 				moveFigures(eventPoint);
-				// Unselect figures
-				canvasState.unSelectAllFigures();
+				System.out.println("Back in Pane"+canvasState.figures());
+				startPoint = eventPoint;
+				drawCanvas();
 				// Clear selection button
 				toolPane.selectionButton.setSelected(false);
-				drawCanvas();
 			}
 		});
 
@@ -130,7 +130,7 @@ public class PaintPane extends BorderPane {
 				newFigure = selectedFigureButton.returnFigureToDraw(startPoint, endPoint);
 			}
 			if(newFigure != null){
-				System.out.println("SELECTED FIG BUTTON IS SELECTED: "+ selectedFigureButton);
+				//System.out.println("SELECTED FIG BUTTON IS SELECTED: "+ selectedFigureButton);
 				canvasState.addFigure(newFigure);
 			}
 			startPoint = null;
@@ -165,13 +165,14 @@ public class PaintPane extends BorderPane {
 
 	void setSelectedFiguresBorderWidth(){
 		for(Figure figure : canvasState.getSelectedFigures()){
-			System.out.println(figure);
+			//System.out.println(figure);
 			figure.setBorderWidth(lineWidth);
 		}
 	}
 
 	// Redraw entire canvas
 	void drawCanvas() {
+		System.out.println("DRAW CANVASSSSSSSSS");
 		// Clear canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 

@@ -6,9 +6,12 @@ public class Rectangle extends Figure {
 
     protected final Point topLeft, bottomRight;
 
-    public Rectangle(Point topLeft, Point bottomRight) {
+    public Rectangle(Point topLeft, Point bottomRight, String fillColor, String borderColor, double borderWidth) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+        setBorderColor(borderColor);
+        setFillingColor(fillColor);
+        setBorderWidth(borderWidth);
     }
 
     @Override

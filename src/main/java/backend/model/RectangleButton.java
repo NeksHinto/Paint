@@ -8,7 +8,7 @@ public class RectangleButton extends FigureButton {
     }
 
     @Override
-    public Figure returnFigureToDraw(Point start, Point end) {
-        return new Rectangle(start, end);
+    public Figure returnFigureToDraw(Point start, Point end, String fillColor, String borderColor, double borderWidth) {
+        return new Rectangle(start, end, fillColor, borderColor, borderWidth);
     }
 }

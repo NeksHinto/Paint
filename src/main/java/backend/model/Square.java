@@ -4,8 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Square extends Rectangle {
 
-    public Square(Point topLeft, Point bottomRight) {
-        super(topLeft, bottomRight);
+    public Square(Point topLeft, Point bottomRight, String fillColor, String borderColor, double borderWidth) {
+        super(topLeft, bottomRight, fillColor, borderColor, borderWidth);
     }
 
     @Override

@@ -12,9 +12,9 @@ public class EllipseButton extends FigureButton {
     }
 
     @Override
-    public Figure returnFigureToDraw(Point start, Point end) {
+    public Figure returnFigureToDraw(Point start, Point end, String fillColor, String borderColor, double borderWidth) {
         horizontalDistance = Math.abs(end.getX() - start.getX());
         verticalDistance = Math.abs(end.getY() - start.getY());
-        return new Ellipse(start, horizontalDistance, verticalDistance);
+        return new Ellipse(start, horizontalDistance, verticalDistance, fillColor, borderColor, borderWidth);
     }
 }

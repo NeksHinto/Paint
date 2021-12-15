@@ -24,7 +24,7 @@ public class PaintPane extends BorderPane {
 
 	Color lineColor = Color.BLACK;
 	Color fillColor = Color.YELLOW;
-	Double lineWidth;
+	double lineWidth = 0;
 
 	// Left menu
 	ToolPane toolPane = new ToolPane(lineColor, fillColor);
@@ -76,6 +76,9 @@ public class PaintPane extends BorderPane {
 						figureSelected = true;
 						canvasState.selectFigure(figure);
 						label.append(figure.toString());
+						lineColor = Color.RED;
+					} else {
+						lineColor = Color.valueOf(figure.getBorderColor());
 					}
 				}
 				if (figureSelected) {
@@ -120,12 +123,11 @@ public class PaintPane extends BorderPane {
 
 			// Transparent rectangle for multiple selection
 			if(toolPane.selectionButton.isSelected()){
-				Rectangle areaSelected = new Rectangle(startPoint, endPoint);
-				areaSelected.setBorderColor(Color.TRANSPARENT.toString());
-				areaSelected.setBorderColor(Color.TRANSPARENT.toString());
+				Rectangle areaSelected = new Rectangle(startPoint, endPoint, Color.TRANSPARENT.toString(), Color.TRANSPARENT.toString(), 1);
 				selectFigures(areaSelected);
+				lineColor = Color.RED;
 			} else if (selectedFigureButton.isSelected()){
-				newFigure = selectedFigureButton.returnFigureToDraw(startPoint, endPoint);
+				newFigure = selectedFigureButton.returnFigureToDraw(startPoint, endPoint, fillColor.toString(), lineColor.toString(), lineWidth);
 			}
 			if(newFigure != null){
 				canvasState.addFigure(newFigure);
@@ -148,19 +150,25 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
-	void setSelectedFiguresFillingColor(){
+	void setSelectedFiguresFillingColor(Color color){
+		canvasState.updateHistory();
+		fillColor = color;
 		for(Figure figure : canvasState.getSelectedFigures()){
 			figure.setFillingColor(fillColor.toString());
 		}
 	}
 
-	void setSelectedFiguresBorderColor(){
+	void setSelectedFiguresBorderColor(Color color){
+		canvasState.updateHistory();
+		lineColor = color;
 		for(Figure figure : canvasState.getSelectedFigures()){
-			figure.setBorderColor(fillColor.toString());
+			figure.setBorderColor(lineColor.toString());
 		}
 	}
 
-	void setSelectedFiguresBorderWidth(){
+	void setSelectedFiguresBorderWidth(Number width){
+		canvasState.updateHistory();
+		lineWidth = (double) width;
 		for(Figure figure : canvasState.getSelectedFigures()){
 			figure.setBorderWidth(lineWidth);
 		}
@@ -174,24 +182,21 @@ public class PaintPane extends BorderPane {
 		// Draw figures
 		for(Figure figure : canvasState.figures()) {
 			// Set border and filling colors
-			setFigureBorderColor(figure);
+			setFigureProperties(figure);
 			figure.draw(gc);
 		}
 	}
 
-	void setFigureBorderColor(Figure figure){
-		if(figure.isSelected()) {
-			gc.setStroke(Color.RED);
-			figure.setBorderColor(Color.RED.toString());
+	void setFigureProperties(Figure figure){
+		if(figure.isSelected() && !selectedFigureButton.isSelected()) {
+			gc.setStroke(lineColor);
+			gc.setFill(fillColor);
+			gc.setLineWidth(lineWidth);
 		} else {
-			figure.setBorderColor(lineColor.toString());
+			gc.setFill(Color.web(figure.getFillColor()));
+			gc.setLineWidth(figure.getBorderWidth());
 			gc.setStroke(Color.web(figure.getBorderColor()));
 		}
-	}
-
-	void setFigureFillingColor(Figure figure){
-		gc.setFill(fillColor);
-		figure.setFillingColor(fillColor.toString());
 	}
 
 	boolean figureBelongs(Figure figure, Point eventPoint) {
@@ -219,23 +224,18 @@ public class PaintPane extends BorderPane {
 
 	void setToolPaneListeners(){
 		toolPane.getBorderSlider().valueProperty().addListener((ov, old_val, new_val) -> {
-			gc.setLineWidth((double) new_val);
+			setSelectedFiguresBorderWidth(new_val);
 			drawCanvas();
-			lineWidth = (double) new_val;
-			setSelectedFiguresBorderWidth();
 		});
 
 		toolPane.getBorderCp().valueProperty().addListener((ov, old_val, new_val) -> {
-			gc.setStroke(new_val);
+			setSelectedFiguresBorderColor(new_val);
 			drawCanvas();
-			setSelectedFiguresBorderColor();
 		});
 
 		toolPane.getFillingCp().valueProperty().addListener((ov, old_val, new_val) -> {
-			gc.setFill(new_val);
+			setSelectedFiguresFillingColor(new_val);
 			drawCanvas();
-			fillColor = new_val;
-			setSelectedFiguresFillingColor();
 		});
 
 		toolPane.deleteButton.setOnAction(event -> {

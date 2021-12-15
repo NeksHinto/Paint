@@ -8,7 +8,7 @@ public class SquareButton extends FigureButton {
     }
 
     @Override
-    public Figure returnFigureToDraw(Point start, Point end) {
-        return new Square(start, end);
+    public Figure returnFigureToDraw(Point start, Point end, String fillColor, String borderColor, double borderWidth) {
+        return new Square(start, end, fillColor, borderColor, borderWidth);
     }
 }

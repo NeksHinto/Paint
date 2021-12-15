@@ -9,8 +9,8 @@ public class CircleButton extends FigureButton {
     }
 
     @Override
-    public Figure returnFigureToDraw(Point start, Point end) {
+    public Figure returnFigureToDraw(Point start, Point end, String fillColor, String borderColor, double borderWidth) {
         circleRadius = Math.sqrt(Math.pow(end.getX() - start.getX(), 2) + Math.pow(end.getY() - start.getY(), 2));
-        return new Circle(start, circleRadius);
+        return new Circle(start, circleRadius, fillColor, borderColor, borderWidth);
     }
 }

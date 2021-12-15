@@ -47,7 +47,7 @@ public class CanvasState {
         }
     }
 
-    private void updateHistory(){
+    public void updateHistory(){
         // Add current canvas state to history
         history.add(++currentStateIndex, new LinkedList<>());
         history.get(currentStateIndex).addAll(allFigures);

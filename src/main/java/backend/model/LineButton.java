@@ -8,7 +8,7 @@ public class LineButton extends FigureButton {
     }
 
     @Override
-    public Figure returnFigureToDraw(Point start, Point end) {
-        return new Line(start, end);
+    public Figure returnFigureToDraw(Point start, Point end, String fillColor, String borderColor, double borderWidth) {
+        return new Line(start, end, fillColor, borderColor, borderWidth);
     }
 }

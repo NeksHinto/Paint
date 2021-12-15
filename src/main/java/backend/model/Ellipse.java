@@ -6,10 +6,13 @@ public class Ellipse extends Figure {
     protected Point centerPoint;
     private double horizontalAxis, verticalAxis;
 
-    public Ellipse(Point centerPoint, double horizontalAxis, double minorAxis) {
+    public Ellipse(Point centerPoint, double horizontalAxis, double minorAxis, String fillColor, String borderColor, double borderWidth) {
         this.centerPoint = centerPoint;
         this.horizontalAxis = horizontalAxis;
         this.verticalAxis = minorAxis;
+        setBorderColor(borderColor);
+        setFillingColor(fillColor);
+        setBorderWidth(borderWidth);
     }
 
     @Override

@@ -7,6 +7,7 @@ public abstract class Figure implements DrawableFigure, MovableFigure, Selectabl
     public String borderColor;
     public boolean isSelected;
     public double borderWidth;
+    private String fillColor;
 
     public abstract boolean belongs(Point point);
 
@@ -21,8 +22,12 @@ public abstract class Figure implements DrawableFigure, MovableFigure, Selectabl
         return true;
     }
 
-    public void setFillingColor(String color){
-        this.setFillingColor(color);
+    public void setFillingColor(String color) {
+        this.fillColor = color;
+    }
+
+    public String getFillColor() {
+        return fillColor;
     }
 
     public void setBorderColor(String color){
@@ -35,6 +40,10 @@ public abstract class Figure implements DrawableFigure, MovableFigure, Selectabl
 
     public String getBorderColor() {
         return borderColor;
+    }
+
+    public double getBorderWidth() {
+        return borderWidth;
     }
 
     public boolean isSelected() {

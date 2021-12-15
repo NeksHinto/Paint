@@ -1,6 +1,5 @@
 package backend.model;
 
-import backend.CanvasState;
 import javafx.scene.control.ToggleButton;
 
 public abstract class FigureButton extends ToggleButton {
@@ -9,5 +8,5 @@ public abstract class FigureButton extends ToggleButton {
         super(text);
     }
 
-    public abstract Figure returnFigureToDraw(Point start, Point end);
+    public abstract Figure returnFigureToDraw(Point start, Point end, String fillColor, String borderColor, double borderWidth);
 }

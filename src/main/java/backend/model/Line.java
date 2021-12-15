@@ -5,9 +5,12 @@ import javafx.scene.canvas.GraphicsContext;
 public class Line extends Figure {
     protected Point startPoint, endPoint;
 
-    public Line(Point startPoint, Point endPoint) {
+    public Line(Point startPoint, Point endPoint, String fillColor, String borderColor, double borderWidth) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
+        setBorderColor(borderColor);
+        setFillingColor(fillColor);
+        setBorderWidth(borderWidth);
     }
 
     @Override
